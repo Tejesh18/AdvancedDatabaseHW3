@@ -1,0 +1,128 @@
+---
+title: "HW3 - ER Models"
+author: 
+  - Tejesh Annavarapu
+  - Srujan Katukam
+  - Anumandla Muralidhar Reddy
+  - Ajaykumar Reddy Rachala
+format: html
+toc: true
+toc-depth: 3
+---
+
+# **CMSC 608 - Advanced Database**
+### **Instructor:** Thomas Gyeera
+
+## **GitHub Repository**
+👉 **[AdvancedDatabaseHW3 Repository](https://github.com/Tejesh18/AdvancedDatabaseHW3)**
+
+## Introduction
+This document presents an analysis of the `shopping_trends.csv` dataset to extract relevant entities, attributes, and their relationships. The goal is to prepare a structured dataset suitable for database design by identifying primary keys, foreign keys, and composite keys. Additionally, we will represent the extracted schema using Crow’s Foot Notation in an ER Model.
+
+## Identified Entities and Attributes
+
+### **1. Customer**
+
+*   CustomerID (Primary Key)
+*   Age
+*   Gender
+*   Subscription Status
+
+### **2. Product**
+
+*   ItemPurchased (Primary Key)
+*   Category
+*   Size
+*   Color
+*   Season
+*   Review Rating
+
+### **3. Purchase**
+
+*   CustomerID (Foreign Key)
+*   ItemPurchased (Foreign Key)
+*   PurchaseAmountUSD
+*   Location
+*   PaymentMethod
+*   ShippingType
+*   DiscountApplied
+*   PromoCodeUsed
+
+### **4. PaymentMethod**
+
+*   PaymentMethod (Primary Key)
+
+### **5. Frequency**
+
+*   FrequencyOfPurchases (Primary Key)
+*   PreviousPurchases
+
+## Identifying Relationships
+
+*   **A Customer can make multiple Purchases** (1:M)
+*   **A Product can be part of multiple Purchases** (1:M)
+*   **A Purchase uses one Payment Method** (1:1)
+*   **A Customer has one Frequency** (1:1)
+
+## Identifying Keys
+
+*   **Primary Keys:**
+    *   CustomerID (Customer)
+    *   ItemPurchased (Product)
+    *   (CustomerID, ItemPurchased) as Composite Key for Purchase
+    *   PaymentMethod (PaymentMethod)
+    *   FrequencyOfPurchases (Frequency)
+*   **Foreign Keys:**
+    *   CustomerID → Purchase
+    *   ItemPurchased → Purchase
+
+## Crow’s Foot Notation ER Model
+The ER Model using Crow’s Foot Notation:
+
+```{mermaid}
+erDiagram
+    CUSTOMER ||--o{ PURCHASE : makes
+    PRODUCT ||--o{ PURCHASE : included_in
+    PURCHASE ||--|| PAYMENTMETHOD : uses
+    CUSTOMER ||--|| FREQUENCY : has
+    
+    CUSTOMER {
+        int CustomerID PK
+        int Age
+        string Gender
+        string SubscriptionStatus
+    }
+
+    PRODUCT {
+        string ItemPurchased PK
+        string Category
+        string Size
+        string Color
+        string Season
+        float ReviewRating
+    }
+
+    PURCHASE {
+        int CustomerID FK
+        string ItemPurchased FK
+        float PurchaseAmountUSD
+        string Location
+        string PaymentMethod FK
+        string ShippingType
+        float DiscountApplied
+        string PromoCodeUsed
+    }
+
+    PAYMENTMETHOD {
+        string PaymentMethod PK
+    }
+
+    FREQUENCY {
+        int FrequencyOfPurchases PK
+        int PreviousPurchases
+    }
+```
+
+
+## Conclusion
+This document provides an entity-relationship model for the given dataset, outlining the database structure required for implementation. The Crow’s Foot notation diagram visually represents entity relationships, ensuring a normalized design suitable for efficient querying and data management.
